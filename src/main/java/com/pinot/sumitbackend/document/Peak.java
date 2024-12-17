@@ -48,13 +48,22 @@ public class Peak {
 	@Setter
 	@Field(name = "geometry")
 	private GeoJsonPoint geometry;
+	
+	@Getter
+	@Setter
+	@Field(name="photoUrl")
+	private String photoUrl;
 
-	public Peak(@NotBlank @Size(max = 10) @NotBlank @Size(max = 10) Integer elevation, @NotBlank @Size(max = 1000) String name,
-			String wikipediaUri) {
+	public Peak(@NotBlank @Size(max = 10) Integer elevation, @NotBlank @Size(max = 1000) String name,
+			String wikipediaUri, GeoJsonPoint geometry, String photoUrl) {
 		super();
 		this.elevation = elevation;
 		this.name = name;
 		this.wikipediaUri = wikipediaUri;
+		this.geometry = geometry;
+		this.photoUrl = photoUrl;
 	}
+	
+	
 	
 }
