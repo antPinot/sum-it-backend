@@ -56,5 +56,8 @@ build/
 hs_err_pid*
 replay_pid*
 
+# Environment Variables #
+*.env
+
 # Not intended to Production
 /src/main/java/services/SERPService.java

@@ -25,6 +25,10 @@ public class SumItBackendApplication implements CommandLineRunner{
 	private SERPService serpService;
 	
 	public static void main(String[] args) {
+		
+		//Load environment variables before running application
+		EnvLoader.loadEnv();
+		
 		SpringApplication.run(SumItBackendApplication.class, args);
 		
 	}
