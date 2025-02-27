@@ -43,8 +43,8 @@ class PeakControllerTest {
 		
 		List<Peak> testPeaks = new ArrayList<>();
 
-		testPeaks.add(new Peak(2581, "Peak 1", null, null, null));
-		testPeaks.add(new Peak(4863, "Peak 2", null, null, null));
+		testPeaks.add(new Peak(2581, "Peak 1", null, null, null, null));
+		testPeaks.add(new Peak(4863, "Peak 2", null, null, null, null));
 		
 		when(mockPeakController.getAllPeaks()).thenReturn(testPeaks);
 	}

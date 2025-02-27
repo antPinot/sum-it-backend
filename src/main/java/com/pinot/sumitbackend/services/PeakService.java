@@ -22,6 +22,10 @@ public class PeakService {
 	@Autowired
 	private PeakRepository peakRepository;
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Peak> getAllPeaks(){
 		List<Peak> peaksToShuffle = peakRepository.findAll();
 		Collections.shuffle(peaksToShuffle);

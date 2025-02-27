@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * 
+ * {@link Deprecated}
  */
 @Service
 public class SERPService {
