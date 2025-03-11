@@ -6,6 +6,8 @@ package com.pinot.sumitbackend.document;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -24,7 +26,7 @@ public class User {
 	@Id
 	@Field(name = "id")
 	@Getter
-	private String id;
+	private ObjectId id;
 	
 	@NotBlank
 	@Field(name = "username")
@@ -47,15 +49,15 @@ public class User {
 	@NotNull(message = "Please enter email password")
 	private String password;
 	
-	@Field(name = "passwordToken")
+	@Field(name = "refreshToken")
 	@Getter
 	@Setter
 	private String refreshToken;
 	
 	@Field(name = "creationDate")
-	@NotBlank
 	@Getter
 	@Setter
+	@CreatedDate
 	@NotNull(message = "Creation Date is not provided")
 	private LocalDate creationDate;
 	
@@ -64,11 +66,12 @@ public class User {
 	@Setter
 	private List<String> favorites;
 
-	public User(@NotBlank String username, @NotBlank String mail, @NotBlank String password) {
+	public User(String username, String mail, String password, LocalDate creationDate) {
 		super();
 		this.username = username;
 		this.mail = mail;
 		this.password = password;
+		this.creationDate = creationDate;
 	}
 	
 	

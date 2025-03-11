@@ -7,7 +7,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.pinot.sumitbackend.document.Peak;
@@ -31,5 +35,12 @@ public class PeakService {
 		Collections.shuffle(peaksToShuffle);
 		return peaksToShuffle;
 	}
+	
+	public List<Peak> getAllPeaksById(List<String> peaksIds){
+		List<ObjectId> peaksObjectIds = peaksIds.stream().map(ObjectId :: new).toList();
+		return peakRepository.findAllById(peaksObjectIds);
+	}
+	
+	
 
 }

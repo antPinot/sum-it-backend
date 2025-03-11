@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,6 +58,11 @@ public class PeakController {
 	@GetMapping("/all")
 	public List<Peak> getAllPeaks(){
 		return peakService.getAllPeaks();
+	}
+	
+	@GetMapping("/favorites")
+	public List<Peak>getAllPeaksByIds(@RequestBody List<String> peaksIds){
+		return peakService.getAllPeaksById(peaksIds);
 	}
 	
 }

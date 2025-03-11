@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pinot.sumitbackend.document.User;
 import com.pinot.sumitbackend.dto.UserCreationDto;
+import com.pinot.sumitbackend.dto.UserFavoritesDto;
 import com.pinot.sumitbackend.services.UserService;
 
 /**
@@ -31,6 +32,11 @@ public class UserController {
 	@PostMapping()
 	private void saveUser(@RequestBody UserCreationDto userToCreate) {
 		userService.createUser(userToCreate.getUsername(), userToCreate.getMail(), userToCreate.getPassword());
+	}
+	
+	@PostMapping("/favorites")
+	private void updateFavorites(@RequestBody UserFavoritesDto userFavoritesDto) { 
+		userService.updateFavorites(userFavoritesDto.getUsername(), userFavoritesDto.getFavorite());
 	}
 
 }

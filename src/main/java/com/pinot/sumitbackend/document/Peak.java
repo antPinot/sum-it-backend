@@ -5,6 +5,7 @@ package com.pinot.sumitbackend.document;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -54,7 +55,7 @@ public class Peak {
     @Id
     @Field("_id")
     @Getter
-    private String id;
+    private ObjectId id;
 
     /** Elevation of the peak (in meters). */
     @NotBlank
