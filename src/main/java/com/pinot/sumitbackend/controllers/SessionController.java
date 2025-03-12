@@ -51,7 +51,6 @@ public class SessionController {
 
 	@PostMapping
 	public ResponseEntity<?> createAuthToken(@RequestBody UserCreationDto userCreationDto) {
-		System.out.println("LOGIN OK");
 		return userRepository.findByUsername(userCreationDto.getUsername())
 				.filter(user -> passwordEncoder.matches(userCreationDto.getPassword(), user.getPassword()))
 				.map(user -> ResponseEntity.ok()
@@ -75,7 +74,7 @@ public class SessionController {
 				.httpOnly(true)
 				.secure(true)
 //				.sameSite("None")
-				.maxAge(jwtConfig.getExpireIn() * 1000)
+				.maxAge(jwtConfig.getExpireIn())
 				.path("/")
 				.build();
 		
