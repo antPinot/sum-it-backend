@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,15 +30,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebSecurityConfig {
 
 	@Bean
-	SecurityFilterChain filterChain(HttpSecurity http, JWTAuthorizationfilter jwtFilter) throws Exception {
+	SecurityFilterChain filterChain(HttpSecurity http, JWTAuthorizationfilter jwtFilter, JWTConfig jwtConfig) throws Exception {
 		http.authorizeHttpRequests(
 				auth -> auth.requestMatchers(HttpMethod.POST, "/session").permitAll()
 				.requestMatchers(HttpMethod.GET, "/rest/peak/all").permitAll()
 				.requestMatchers(HttpMethod.POST, "/rest/user").permitAll()
+				.requestMatchers(HttpMethod.POST, "/logout").permitAll()
 				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.anyRequest().authenticated())
 		.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 		.csrf(csrf -> csrf.disable())
+		.logout(logout -> logout
+         		.logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpStatus.OK.value()))
+         		.deleteCookies(jwtConfig.getCookie()));
 //		.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //						  .csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler() :: handle))
 		;
