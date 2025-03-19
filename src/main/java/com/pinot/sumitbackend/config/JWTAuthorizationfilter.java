@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -44,7 +46,13 @@ public class JWTAuthorizationfilter extends OncePerRequestFilter {
 						
 						String username = body.getSubject();
 						
-						Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, null);
+						UserDetails userDetails = User.builder()
+								.username(username)
+								.password("")
+								.roles("USER")
+								.build();
+						
+						Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 						SecurityContextHolder.getContext().setAuthentication(authentication);
 					});
 		}

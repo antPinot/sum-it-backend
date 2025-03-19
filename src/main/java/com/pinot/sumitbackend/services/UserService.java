@@ -6,6 +6,7 @@ package com.pinot.sumitbackend.services;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,8 @@ public class UserService {
 		return userRepository.findById(new ObjectId(id)).get();
 	}
 	
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username).get();
+	public Optional<User> findByUsername(String username) {
+		return userRepository.findByUsername(username);
 	}
 	
 	public void createUser(String username, String mail, String password) {
@@ -43,7 +44,8 @@ public class UserService {
 	}
 	
 	public void updateFavorites(String username, String favorite) {
-		User userToUpdate = findByUsername(username);
+		System.out.println("Favori ajouté " + favorite);
+		User userToUpdate = findByUsername(username).map(user -> user).orElseThrow();
 		if (userToUpdate.getFavorites() != null) {
 			userToUpdate.getFavorites().add(favorite);
 		} else {

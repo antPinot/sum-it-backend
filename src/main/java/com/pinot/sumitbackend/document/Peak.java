@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mongodb.lang.Nullable;
 
 import jakarta.validation.constraints.NotBlank;
@@ -55,6 +57,7 @@ public class Peak {
     @Id
     @Field("_id")
     @Getter
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
 
     /** Elevation of the peak (in meters). */

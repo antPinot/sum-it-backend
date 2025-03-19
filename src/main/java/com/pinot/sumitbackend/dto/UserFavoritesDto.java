@@ -5,6 +5,8 @@ package com.pinot.sumitbackend.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 
 /**
@@ -16,6 +18,7 @@ public class UserFavoritesDto {
 	private String username;
 	
 	@Getter
+	 @JsonProperty("favoriteSummitId")
 	private String favorite;
 
 }
