@@ -4,9 +4,11 @@
 package com.pinot.sumitbackend.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +45,43 @@ public class UserService {
 		
 	}
 	
-	public void updateFavorites(String username, String favorite) {
-		System.out.println("Favori ajouté " + favorite);
-		User userToUpdate = findByUsername(username).map(user -> user).orElseThrow();
-		if (userToUpdate.getFavorites() != null) {
-			userToUpdate.getFavorites().add(favorite);
-		} else {
-			userToUpdate.setFavorites(Arrays.asList(favorite));
-		}
-		userRepository.save(userToUpdate);
+//	public void updateFavorites(String username, String favorite) {
+//		User userToUpdate = findByUsername(username).map(user -> user).orElseThrow();
+//		if (userToUpdate.getFavorites() != null) {
+//			userToUpdate.getFavorites().add(favorite);
+//		} else {
+//			userToUpdate.setFavorites(Arrays.asList(favorite));
+//		}
+//		userRepository.save(userToUpdate);
+//	}
+//	
+//	public void deleteFavorites(String username, String favorite) {
+//		User userToUpdate = findByUsername(username).map(user -> user).orElseThrow();
+//		if (userToUpdate.getFavorites() != null) {
+//			userToUpdate.getFavorites().remove(favorite);
+//		}
+//		userRepository.save(userToUpdate);
+//	}
+	
+	private void modifyFavorites(String username, Consumer<List<String>> favoriteModifier) {
+		User userToUpdate = findByUsername(username).orElseThrow();
+		List<String> favorites = userToUpdate.getFavorites();
+	    if (favorites == null) {
+	    	favorites = new ArrayList<>();
+	        userToUpdate.setFavorites(favorites);
+	    }
+	    favoriteModifier.accept(favorites);
+	    userRepository.save(userToUpdate);
 	}
+
+	public void updateFavorites(String username, String favorite) {
+	    modifyFavorites(username, favorites -> favorites.add(favorite));
+	}
+
+	public void deleteFavorites(String username, String favorite) {
+	    modifyFavorites(username, favorites -> favorites.remove(favorite));
+	}
+
+
 
 }
