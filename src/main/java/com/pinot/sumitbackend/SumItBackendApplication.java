@@ -1,28 +1,18 @@
 package com.pinot.sumitbackend;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.web.client.RestTemplate;
 
-import com.pinot.sumitbackend.document.Peak;
-import com.pinot.sumitbackend.repositories.PeakRepository;
-import com.pinot.sumitbackend.services.SERPService;
 
 @SpringBootApplication
 @EnableMongoRepositories
 public class SumItBackendApplication implements CommandLineRunner{
 	
-	@Autowired
-	private PeakRepository peakRepository;
-	
-	@Autowired
-	private SERPService serpService;
+	private static final Logger logger = LoggerFactory.getLogger(SumItBackendApplication.class);
 	
 	public static void main(String[] args) {
 		
