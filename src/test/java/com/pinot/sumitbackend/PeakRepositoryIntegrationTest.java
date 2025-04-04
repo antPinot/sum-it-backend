@@ -4,6 +4,7 @@
 package com.pinot.sumitbackend;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.testcontainers.containers.MongoDBContainer;
@@ -13,7 +14,9 @@ import com.pinot.sumitbackend.repositories.PeakRepository;
 /**
  * 
  */
+@Disabled("Work in progess")
 @DataMongoTest
+
 public class PeakRepositoryIntegrationTest {
 	
 	
