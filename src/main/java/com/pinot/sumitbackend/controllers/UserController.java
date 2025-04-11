@@ -3,8 +3,10 @@
  */
 package com.pinot.sumitbackend.controllers;
 
-import java.util.List;
+import java.util.NoSuchElementException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pinot.sumitbackend.document.User;
 import com.pinot.sumitbackend.dto.UserCreationDto;
 import com.pinot.sumitbackend.dto.UserFavoritesDto;
 import com.pinot.sumitbackend.dto.UserInfoDto;
@@ -34,13 +34,18 @@ import com.pinot.sumitbackend.services.UserService;
 @CrossOrigin(origins = "*")
 public class UserController {
 	
-	@Autowired
-	private UserService userService;
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+	
+	private final UserService userService;
+	
+	private UserController(UserService userService) {
+		this.userService = userService;
+	}
 	
 	@GetMapping("/info")
-	private ResponseEntity<?> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
+	public ResponseEntity<UserInfoDto> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails == null) {
-			System.out.println("no userDetails provided");
+			LOGGER.info("No User Details provided in getUserInfo request");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		
@@ -50,21 +55,24 @@ public class UserController {
 		                .favorites(user.getFavorites())
 		                .creationDate(user.getCreationDate())
 		                .build())
-		        .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+		        .map(ResponseEntity::ok).orElseGet(() -> {
+		        	LOGGER.error("User " + userDetails.getUsername() + " does not exist");
+		        	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		        });
 	}
 	
 	@PostMapping()
-	private void saveUser(@RequestBody UserCreationDto userToCreate) {
+	public void saveUser(@RequestBody UserCreationDto userToCreate) {
 		userService.createUser(userToCreate.getUsername(), userToCreate.getMail(), userToCreate.getPassword());
 	}
 	
 	@PostMapping("/favorites/add")
-	private void updateFavorites(@RequestBody UserFavoritesDto userFavoritesDto) {
-		userService.updateFavorites(userFavoritesDto.getUsername(), userFavoritesDto.getFavorite());
+	public void updateFavorites(@RequestBody UserFavoritesDto userFavoritesDto) {
+			userService.updateFavorites(userFavoritesDto.getUsername(), userFavoritesDto.getFavorite());
 	}
 	
 	@DeleteMapping("{username}/favorites/delete/{favoriteId}")
-	private void deleteFavorites(@PathVariable("username") String username, @PathVariable("favoriteId") String favoriteId ) {
+	public void deleteFavorites(@PathVariable("username") String username, @PathVariable("favoriteId") String favoriteId ) {
 		userService.deleteFavorites(username, favoriteId);
 	}
 	
