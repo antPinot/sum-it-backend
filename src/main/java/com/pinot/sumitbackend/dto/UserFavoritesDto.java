@@ -20,7 +20,7 @@ public class UserFavoritesDto {
 	private String username;
 	
 	@Getter
-	 @JsonProperty("favoriteSummitId")
+	@JsonProperty("favoriteSummitId")
 	private String favorite;
 
 }

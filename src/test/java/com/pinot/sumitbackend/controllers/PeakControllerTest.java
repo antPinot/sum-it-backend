@@ -28,7 +28,7 @@ import com.pinot.sumitbackend.document.Peak;
 import com.pinot.sumitbackend.services.PeakService;
 
 /**
- * Unit tests for PeakController
+ * Functional tests for PeakController
  */
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
