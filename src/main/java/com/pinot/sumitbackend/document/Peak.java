@@ -57,6 +57,7 @@ public class Peak {
     @Id
     @Field("_id")
     @Getter
+    @Setter
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
 

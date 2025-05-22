@@ -46,15 +46,12 @@ import com.pinot.sumitbackend.services.PeakService;
 @CrossOrigin(origins = "*")
 public class PeakController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(PeakController.class);
+	private final PeakService peakService;
 	
-	
-	/**
-	 * {@code @Autowired} : Injects an instance of {@link PeakService} to interact with data.
-	 */
-	@Autowired
-	private PeakService peakService;
-	
+	public PeakController(PeakService peakService) {
+		this.peakService = peakService;
+	}
+
 	/**
      * Retrieves the list of all available peaks.
      * 
