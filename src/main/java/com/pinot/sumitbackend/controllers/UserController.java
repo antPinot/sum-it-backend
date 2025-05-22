@@ -21,10 +21,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pinot.sumitbackend.dto.UserAvatarDto;
 import com.pinot.sumitbackend.dto.UserCreationDto;
 import com.pinot.sumitbackend.dto.UserFavoritesDto;
 import com.pinot.sumitbackend.dto.UserInfoDto;
 import com.pinot.sumitbackend.services.UserService;
+
+import jakarta.validation.Valid;
 
 /**
  * 
@@ -54,6 +57,7 @@ public class UserController {
 		                .username(user.getUsername())
 		                .favorites(user.getFavorites())
 		                .creationDate(user.getCreationDate())
+		                .avatar(user.getAvatar())
 		                .build())
 		        .map(ResponseEntity::ok).orElseGet(() -> {
 		        	LOGGER.error("User " + userDetails.getUsername() + " does not exist");
@@ -66,9 +70,14 @@ public class UserController {
 		userService.createUser(userToCreate.getUsername(), userToCreate.getMail(), userToCreate.getPassword());
 	}
 	
+	@PostMapping("/avatar")
+	public void updateAvatar(@RequestBody @Valid UserAvatarDto userAvatarDto) {
+		userService.updateAvatar(userAvatarDto.getUsername(), userAvatarDto.getAvatar());
+	}
+	
 	@PostMapping("/favorites/add")
 	public void updateFavorites(@RequestBody UserFavoritesDto userFavoritesDto) {
-			userService.updateFavorites(userFavoritesDto.getUsername(), userFavoritesDto.getFavorite());
+		userService.updateFavorites(userFavoritesDto.getUsername(), userFavoritesDto.getFavorite());
 	}
 	
 	@DeleteMapping("{username}/favorites/delete/{favoriteId}")

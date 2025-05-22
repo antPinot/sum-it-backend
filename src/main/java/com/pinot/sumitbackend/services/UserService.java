@@ -62,8 +62,18 @@ public class UserService {
 		transactionListener.runAfterCommit(() -> LOGGER.info("L'utilisateur " + username + " a été créé avec succès"));
 	}
 	
+	@Transactional
+	public void updateAvatar(String username, String dataUrlAvatar) {
+		User userToUpdate = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		System.out.println(dataUrlAvatar);
+		userToUpdate.setAvatar(dataUrlAvatar);
+		userRepository.save(userToUpdate);
+		
+		transactionListener.runAfterCommit(() -> LOGGER.info("L'avatar de l'utilisateur " + username + " a été modifié avec succès"));
+	}
 	
-	private void modifyFavorites(String username, Consumer<List<String>> favoriteModifier) throws NoSuchElementException{
+	
+	private void modifyFavorites(String username, Consumer<List<String>> favoriteModifier) throws UserNotFoundException{
 		User userToUpdate = findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 		List<String> favorites = userToUpdate.getFavorites();
 	    if (favorites == null) {
@@ -78,6 +88,7 @@ public class UserService {
 	public void updateFavorites(String username, String favorite) {
 	    modifyFavorites(username, favorites -> favorites.add(favorite));
 	    transactionListener.runAfterCommit(() -> LOGGER.info("Favorite " + favorite + " has been added by " + username));
+	    userRepository.findByUsername(username).get().getMail();
 	}
 	
 	@Transactional

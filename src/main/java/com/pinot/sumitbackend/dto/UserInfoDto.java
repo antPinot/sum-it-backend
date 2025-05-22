@@ -23,5 +23,8 @@ public class UserInfoDto {
 	
 	@Getter
 	private LocalDate creationDate;
+	
+	@Getter
+	private String avatar;
 
 }

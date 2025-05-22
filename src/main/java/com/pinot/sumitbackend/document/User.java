@@ -26,6 +26,7 @@ public class User {
 	@Id
 	@Field(name = "id")
 	@Getter
+	@Setter
 	private ObjectId id;
 	
 	@NotBlank
@@ -65,6 +66,11 @@ public class User {
 	@Getter
 	@Setter
 	private List<String> favorites;
+	
+	@Field(name = "avatar")
+	@Getter
+	@Setter
+	private String avatar;
 
 	public User(String username, String mail, String password, LocalDate creationDate) {
 		super();
