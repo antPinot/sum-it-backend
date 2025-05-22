@@ -14,13 +14,18 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public class TransactionListener {
 	
 	public void runAfterCommit(Runnable action) {
-		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+		if (TransactionSynchronizationManager.isSynchronizationActive()) {
+			TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
 
-			@Override
-			public void afterCommit() {
-				action.run();
-			}
-		});
+				@Override
+				public void afterCommit() {
+					action.run();
+				}
+			});
+		} else {
+			action.run();
+		}
+		
 	}
 
 }
